@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <title> Algoritmo Genetico </title>
+    <meta content="">
+    <style></style>
+  </head>
+  <body>
+  <div id="console"></div>
+  </body>
+<script src="realRandoms.js"></script>
+<script type="text/javascript">
+
+
+    var generaciones = 0;
+    var generacionesParo = 20;
+    var cout = '';
+    Poblacion = [];
+
+
+Datalog = function(){
+ var consoleItem = document.getElementById('console');
+ consoleItem.textContent = cout;
+ cout = '';
+}
+
+
+//////////////////////Funcion Objetivo/////////////////////////
+///////////////////////////////////////////////////////////////
+
+fobjetivo = function (x) {
+ return (Math.pow(x,4) + Math.pow(5*x,4) + Math.pow(x,4) -4*x +1)+20;
+}
+
+/////////////////////////Gen Utilities/////////////////////////
+///////////////////////////////////////////////////////////////
+genDecoder = function (genes) {
+    /*ParseInt ya tiene el parametro de base sobrecargado*/
+    var decodedGenome = parseInt( genes,2 );
+    return decodedGenome;
+}
+decodedGentoArrRes = function (_decodedGenome) {
+        var r = (-4 + _decodedGenome *0.2); /*Resulados en el grupo valido*/
+        return Math.abs(Math.round(r));
+}
+genEncoder = function(dec){
+
+    var binario = (dec >>> 0).toString(2);
+    var ceros = 4 - binario.length;
+    var r = '';
+    for (j = ceros; j!==0; j--){
+        r += '0';
+    }
+    r += binario;
+
+    console.log('Dec = ' + dec + ' Bin = ' + r);
+
+    return r;
+}
+function getRandomInt(min, max) {
+
+    var array = new Uint8Array(1);
+    window.crypto.getRandomValues(array);
+       // console.log('Crypt rand = ' + array[0]);
+    rand =  Math.random() * (max - min + 1) + min;
+   // console.log('basic rand = ' + Math.abs(Math.floor(rand)));
+    return Math.abs(rand);
+
+}
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+
+//////////////////////Clase individuo//////////////////////////
+///////////////////////////////////////////////////////////////
+Individuo = function (_gens) {
+    this.genes = _gens;
+    this._dec_gen = genDecoder(this.genes);
+    this.getFitness = fobjetivo(decodedGentoArrRes(this._dec_gen));
+}
+
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+  PoblacionInicial = [];
+
+/*Genera poblacion inicial aleatoriamente*/
+  for(i = 0; i < 15; i++)
+  {
+      randomInd = parseInt(getRandomInt(0,14));
+      genAleat = genEncoder(randomInd);
+      PoblacionInicial.push( new Individuo(genAleat));
+  }
+
+  Poblacion = PoblacionInicial;
+
+  /**Rutina principal*/
+  while (generaciones++ <= generacionesParo){
+      Poblacion.sort(function(a,b){return a.getFitness -b.getFitness});
+      cout += JSON.stringify(Poblacion);
+      Datalog();
+  }
+
+
+</script>
+
+</html>
