@@ -1,5 +1,3 @@
-
-
 var generaciones = 0;
 var generacionesParo = 20;
 var GenerationRecord = [];
@@ -9,7 +7,7 @@ var Hijos = [];
 
 //////////////////////Funcion Objetivo/////////////////////////
 fobjetivo = function (x) {
-    return (-1*(Math.pow(x, 4) + Math.pow(5 * x, 3) + Math.pow(x, 2) - (4 * x) + 1))+6;
+    return (-1 * (Math.pow(x, 4) + Math.pow(5 * x, 3) + Math.pow(x, 2) - (4 * x) + 1)) + 6;
 }
 
 /////////////////////Genetic Utilities/////////////////////////
@@ -68,9 +66,7 @@ genEncoder = function (dec) {
 function getRandomInt(min, max) {
     var array = new Uint8Array(1);
     window.crypto.getRandomValues(array);
-    // console.log('Crypt rand = ' + array[0]);
     rand = Math.random() * (max - min + 1) + min;
-    // console.log('basic rand = ' + Math.abs(Math.floor(rand)));
     return Math.abs(rand);
 }
 
@@ -114,9 +110,8 @@ for (i = 0; i < 20; i++) {
 }
 
 
-
 /**Rutina principal*/
- Poblacion = PoblacionInicial;
+Poblacion = PoblacionInicial;
 while (generaciones++ <= generacionesParo) {
 
     fitnessTotal = 0;
@@ -124,13 +119,13 @@ while (generaciones++ <= generacionesParo) {
         fitnessTotal += Poblacion[i].getFitness;
     }
     for (var j in Poblacion) {
-        Poblacion[j].prob = parseFloat(Poblacion[j].getFitness/fitnessTotal)*100.0;
+        Poblacion[j].prob = parseFloat(Poblacion[j].getFitness / fitnessTotal) * 100.0;
 
     }
     var roulette = [];
     for (var k in Poblacion) {
-        for(var l = 0 ; l < parseInt(Poblacion[k].prob);l++){
-            roulette.push( { id: k , genData : Poblacion[k].genes } );
+        for (var l = 0; l < parseInt(Poblacion[k].prob); l++) {
+            roulette.push({id: k, genData: Poblacion[k].genes});
         }
 
     }
@@ -138,11 +133,11 @@ while (generaciones++ <= generacionesParo) {
     Hijos = [];
 
     while (Hijos.length < Poblacion.length) {
-        var p1Id = parseInt(getRandomInt(0, roulette.length-1));
-        var p2Id = parseInt(getRandomInt(0, roulette.length-1));
+        var p1Id = parseInt(getRandomInt(0, roulette.length - 1));
+        var p2Id = parseInt(getRandomInt(0, roulette.length - 1));
 
         while (roulette[p1Id].id === roulette[p2Id].id) {
-            p2Id = parseInt(getRandomInt(0, roulette.length-1));
+            p2Id = parseInt(getRandomInt(0, roulette.length - 1));
         }
 
         var p1 = new Individuo(roulette[p1Id].genData);
@@ -150,18 +145,21 @@ while (generaciones++ <= generacionesParo) {
 
         var parHijos = ReproduceInd(p1, p2);
 
-        Hijos.push( new Individuo(parHijos.h1.genes) );
-        Hijos.push( new Individuo(parHijos.h2.genes) );
+        Hijos.push(new Individuo(parHijos.h1.genes));
+        Hijos.push(new Individuo(parHijos.h2.genes));
     }
 
-    var chartResume =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var chartResume = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    for (var m in Poblacion){
+    for (var m in Poblacion) {
         var o = Poblacion[m].dec_gen;
         chartResume[o]++;
     }
 
-    GenerationRecord[generaciones-1] = {gen: generaciones, data: {pob : Poblacion.slice(),roul : roulette, resume : chartResume} };
+    GenerationRecord[generaciones - 1] = {
+        gen: generaciones,
+        data: {pob: Poblacion.slice(), roul: roulette, resume: chartResume}
+    };
     Poblacion = Hijos;
 }
 
