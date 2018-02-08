@@ -104,7 +104,7 @@ var fitnessTotal = 0;
 var PoblacionInicial = [];
 
 /*Genera poblacion inicial aleatoriamente*/
-for (i = 0; i < 20; i++) {
+for (i = 0; i < 50; i++) {
     randomInd = parseInt(getRandomInt(0, 15));
     genAleat = genEncoder(randomInd);
     PoblacionInicial.push(new Individuo(genAleat));
