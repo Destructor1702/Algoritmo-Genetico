@@ -7,7 +7,8 @@ var Hijos = [];
 
 //////////////////////Funcion Objetivo/////////////////////////
 fobjetivo = function (x) {
-    return (-1 * (Math.pow(x, 4) + Math.pow(5 * x, 3) + Math.pow(x, 2) - (4 * x) + 1)) + 6;
+    var f = Math.pow(x, 4) + 5 * Math.pow(x, 3) + 4 * Math.pow( x, 2) - (4 * x) + 1;
+    return (-1 *f ) + 20;
 }
 
 /////////////////////Genetic Utilities/////////////////////////
@@ -104,7 +105,7 @@ var PoblacionInicial = [];
 
 /*Genera poblacion inicial aleatoriamente*/
 for (i = 0; i < 20; i++) {
-    randomInd = parseInt(getRandomInt(0, 14));
+    randomInd = parseInt(getRandomInt(0, 15));
     genAleat = genEncoder(randomInd);
     PoblacionInicial.push(new Individuo(genAleat));
 }
@@ -162,5 +163,3 @@ while (generaciones++ <= generacionesParo) {
     };
     Poblacion = Hijos;
 }
-
-
